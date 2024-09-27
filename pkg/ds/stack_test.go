@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestPush(t *testing.T) {
+func TestStackPush(t *testing.T) {
 	stack := Stack{}
 	stack.Push(1)
 
@@ -13,7 +13,7 @@ func TestPush(t *testing.T) {
 	}
 }
 
-func TestPop(t *testing.T) {
+func TestStackPop(t *testing.T) {
 	stack := Stack{}
 	stack.Push(1)
 
@@ -30,7 +30,7 @@ func TestPop(t *testing.T) {
 	}
 }
 
-func TestPeek(t *testing.T) {
+func TestStackPeek(t *testing.T) {
 	stack := Stack{}
 	stack.Push(1)
 
@@ -47,7 +47,7 @@ func TestPeek(t *testing.T) {
 	}
 }
 
-func TestIsEmpty(t *testing.T) {
+func TestStackIsEmpty(t *testing.T) {
 	stack := Stack{}
 
 	if !stack.IsEmpty() {
