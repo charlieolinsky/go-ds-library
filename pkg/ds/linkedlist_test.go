@@ -41,8 +41,7 @@ func TestDelete(t *testing.T) {
 	l := LinkedList{}
 
 	//Test delete from empty list
-	err := l.Delete(1)
-	if err == nil {
+	if err := l.Delete(1); err == nil {
 		t.Errorf("expected error when deleting from an empty linked list")
 	}
 
@@ -52,9 +51,7 @@ func TestDelete(t *testing.T) {
 
 	// 1 => 2 => nil
 
-	_ = l.Delete(1)
-
-	if l.head.value != 2 {
+	if _ = l.Delete(1); l.head.value != 2 {
 		t.Errorf("expected list head to equal 2 after deletion, got %d", l.head.value)
 	}
 
@@ -74,15 +71,71 @@ func TestDelete(t *testing.T) {
 
 	//Test deletion from end
 	_ = l.Delete(4)
-	if l.head.value != 4 {
-		t.Errorf("expected list head to equal 4 after deletion, got %d", l.head.value)
-	}
+	expectedValues = []int{2}
+	checkExpected(&l, expectedValues, t)
 
 	//2 => nil
 
 }
 
-// LinkedList helper method, checks if values in the list match those that are expected.
+//Example of table-driven testing
+func TestContains(t *testing.T) {
+	l := LinkedList{}
+
+	cases := []struct {
+		insertValues []int
+		searchValue  int
+		expected     bool
+	}{
+		{[]int{}, 1, false},
+		{[]int{1, 2, 3}, 2, true},
+		{[]int{1, 2, 3}, 5, false},
+	}
+
+	for _, c := range cases {
+		l = LinkedList{}
+
+		for _, val := range c.insertValues {
+			l.InsertAtEnd(val)
+		}
+
+		found := l.Contains(c.searchValue)
+		if found != c.expected {
+			t.Errorf("expected Contains(%d) to return %t, got %t", c.searchValue, c.expected, found)
+		}
+	}
+
+}
+
+func TestIsEmpty(t *testing.T) {
+	l := LinkedList{}
+
+	if l.IsEmpty() != true {
+		t.Errorf("expected true when checking if an empty list is empty, got %t", l.IsEmpty())
+	}
+
+	l.InsertAtEnd(1)
+
+	if l.IsEmpty() != false {
+		t.Errorf("expected false when checking if a non-empty list is empty, got %t", l.IsEmpty())
+	}
+}
+
+func TestLength(t *testing.T) {
+	l := LinkedList{}
+
+	if l.Length() != 0 {
+		t.Errorf("expected length 0 when checking length of empty list, got %d", l.Length())
+	}
+
+	l.InsertAtEnd(1)
+
+	if l.Length() != 1 {
+		t.Errorf("expected length 1 when checking length of non-empty list, got %d", l.Length())
+	}
+}
+
+// helper method, checks if values in the list match those that are expected.
 func checkExpected(l *LinkedList, expectedValues []int, t *testing.T) {
 	// Check if the length of the linked list matches the expected length
 	count := 0
