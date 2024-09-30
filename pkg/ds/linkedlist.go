@@ -64,3 +64,30 @@ func (l *LinkedList) Delete(val int) error {
 	//return error if value is not found
 	return errors.New("provided value does not exist in linked list")
 }
+
+func (l *LinkedList) Contains(value int) bool {
+	if l.head == nil {
+		return false
+	}
+
+	for tmp := l.head; tmp != nil; tmp = tmp.next {
+		if tmp.value == value {
+			return true
+		}
+	}
+
+	return false
+
+}
+
+func (l *LinkedList) IsEmpty() bool {
+	return l.head == nil
+}
+
+func (l *LinkedList) Length() int {
+	count := 0
+	for tmp := l.head; tmp != nil; tmp = tmp.next {
+		count += 1
+	}
+	return count
+}

@@ -50,19 +50,36 @@ func TestDelete(t *testing.T) {
 	l.InsertAtEnd(1)
 	l.InsertAtEnd(2)
 
+	// 1 => 2 => nil
+
 	_ = l.Delete(1)
 
 	if l.head.value != 2 {
 		t.Errorf("expected list head to equal 2 after deletion, got %d", l.head.value)
 	}
 
+	// 2 => nil
+
 	//Test deletion from middle
 	l.InsertAtEnd(3)
 	l.InsertAtEnd(4)
 
+	//2 => 3 => 4 => nil
+
 	_ = l.Delete(3)
 	expectedValues := []int{2, 4}
 	checkExpected(&l, expectedValues, t)
+
+	//2 => 4 => nil
+
+	//Test deletion from end
+	_ = l.Delete(4)
+	if l.head.value != 4 {
+		t.Errorf("expected list head to equal 4 after deletion, got %d", l.head.value)
+	}
+
+	//2 => nil
+
 }
 
 // LinkedList helper method, checks if values in the list match those that are expected.
