@@ -1,14 +1,18 @@
 package ds
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/charlieolinsky/go-ds-library/pkg/ds"
+)
 
 func TestInsertAtEnd(t *testing.T) {
-	l := LinkedList{}
+	l := ds.LinkedList{}
 
 	//Test insert into empty list
 	l.InsertAtEnd(1)
-	if l.head.value != 1 {
-		t.Fatalf("expected head of linked list to be 1, got %d", l.head.value)
+	if l.Head.Value != 1 {
+		t.Fatalf("expected head of linked list to be 1, got %d", l.Head.Value)
 	}
 
 	//Test insert into a non-empty list
@@ -21,12 +25,12 @@ func TestInsertAtEnd(t *testing.T) {
 }
 
 func TestInsertAtStart(t *testing.T) {
-	l := LinkedList{}
+	l := ds.LinkedList{}
 
 	//Check insert from empty
 	l.InsertAtStart(1)
-	if l.head.value != 1 {
-		t.Errorf("expected 1 inserted at start of list, got %d", l.head.value)
+	if l.Head.Value != 1 {
+		t.Errorf("expected 1 inserted at start of list, got %d", l.Head.Value)
 	}
 
 	//Check insert from non-empty and ensure proper order
@@ -38,7 +42,7 @@ func TestInsertAtStart(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	l := LinkedList{}
+	l := ds.LinkedList{}
 
 	//Test delete from empty list
 	if err := l.Delete(1); err == nil {
@@ -51,8 +55,8 @@ func TestDelete(t *testing.T) {
 
 	// 1 => 2 => nil
 
-	if _ = l.Delete(1); l.head.value != 2 {
-		t.Errorf("expected list head to equal 2 after deletion, got %d", l.head.value)
+	if _ = l.Delete(1); l.Head.Value != 2 {
+		t.Errorf("expected list head to equal 2 after deletion, got %d", l.Head.Value)
 	}
 
 	// 2 => nil
@@ -78,9 +82,9 @@ func TestDelete(t *testing.T) {
 
 }
 
-//Example of table-driven testing
+// Example of table-driven testing
 func TestContains(t *testing.T) {
-	l := LinkedList{}
+	l := ds.LinkedList{}
 
 	cases := []struct {
 		insertValues []int
@@ -93,7 +97,7 @@ func TestContains(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		l = LinkedList{}
+		l = ds.LinkedList{}
 
 		for _, val := range c.insertValues {
 			l.InsertAtEnd(val)
@@ -108,7 +112,7 @@ func TestContains(t *testing.T) {
 }
 
 func TestIsEmpty(t *testing.T) {
-	l := LinkedList{}
+	l := ds.LinkedList{}
 
 	if l.IsEmpty() != true {
 		t.Errorf("expected true when checking if an empty list is empty, got %t", l.IsEmpty())
@@ -122,7 +126,7 @@ func TestIsEmpty(t *testing.T) {
 }
 
 func TestLength(t *testing.T) {
-	l := LinkedList{}
+	l := ds.LinkedList{}
 
 	if l.Length() != 0 {
 		t.Errorf("expected length 0 when checking length of empty list, got %d", l.Length())
@@ -136,10 +140,10 @@ func TestLength(t *testing.T) {
 }
 
 // helper method, checks if values in the list match those that are expected.
-func checkExpected(l *LinkedList, expectedValues []int, t *testing.T) {
+func checkExpected(l *ds.LinkedList, expectedValues []int, t *testing.T) {
 	// Check if the length of the linked list matches the expected length
 	count := 0
-	for tmp := l.head; tmp != nil; tmp = tmp.next {
+	for tmp := l.Head; tmp != nil; tmp = tmp.Next {
 		count++
 	}
 
@@ -149,14 +153,14 @@ func checkExpected(l *LinkedList, expectedValues []int, t *testing.T) {
 
 	// Iterate through the linked list and check values
 	i := 0
-	for tmp := l.head; tmp != nil; tmp = tmp.next {
+	for tmp := l.Head; tmp != nil; tmp = tmp.Next {
 		if i >= len(expectedValues) {
-			t.Errorf("unexpected additional node with value %d at position %d", tmp.value, i)
+			t.Errorf("unexpected additional node with value %d at position %d", tmp.Value, i)
 			break
 		}
 
-		if tmp.value != expectedValues[i] {
-			t.Errorf("expected value at position %d to equal %d, got %d", i, expectedValues[i], tmp.value)
+		if tmp.Value != expectedValues[i] {
+			t.Errorf("expected value at position %d to equal %d, got %d", i, expectedValues[i], tmp.Value)
 		}
 		i++
 	}

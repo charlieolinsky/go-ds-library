@@ -1,22 +1,26 @@
 package ds
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/charlieolinsky/go-ds-library/pkg/ds"
+)
 
 func TestQueueEnqueue(t *testing.T) {
-	q := Queue{}
+	q := ds.Queue{}
 
 	q.Enqueue(1)
 
-	if len(q.data) != 1 {
-		t.Errorf("expected queue length to be 1 after enqueue, got %d", len(q.data))
-	} else if q.data[0] != 1 {
-		t.Errorf("expected enqueued value to be 1, got %d", q.data[0])
+	if len(q.Data) != 1 {
+		t.Errorf("expected queue length to be 1 after enqueue, got %d", len(q.Data))
+	} else if q.Data[0] != 1 {
+		t.Errorf("expected enqueued value to be 1, got %d", q.Data[0])
 	}
 
 }
 
 func TestQueueDequeue(t *testing.T) {
-	q := Queue{}
+	q := ds.Queue{}
 
 	_, err := q.Dequeue()
 
@@ -34,14 +38,14 @@ func TestQueueDequeue(t *testing.T) {
 	if n != 1 {
 		t.Errorf("expected dequeued value to be 1, got %d", n)
 	}
-	if len(q.data) != 0 {
-		t.Errorf("expected queue length to be 0 after dequeueing an item, got %d", len(q.data))
+	if len(q.Data) != 0 {
+		t.Errorf("expected queue length to be 0 after dequeueing an item, got %d", len(q.Data))
 	}
 
 }
 
 func TestQueuePeek(t *testing.T) {
-	q := Queue{}
+	q := ds.Queue{}
 
 	_, err := q.Peek()
 
@@ -62,7 +66,7 @@ func TestQueuePeek(t *testing.T) {
 }
 
 func TestQueueIsEmpty(t *testing.T) {
-	q := Queue{}
+	q := ds.Queue{}
 
 	if q.IsEmpty() != true {
 		t.Errorf("expected queue to be empty")
