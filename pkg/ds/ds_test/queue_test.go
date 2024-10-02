@@ -7,7 +7,7 @@ import (
 )
 
 func TestQueueEnqueue(t *testing.T) {
-	q := ds.Queue{}
+	q := ds.Queue[int]{}
 
 	q.Enqueue(1)
 
@@ -20,7 +20,7 @@ func TestQueueEnqueue(t *testing.T) {
 }
 
 func TestQueueDequeue(t *testing.T) {
-	q := ds.Queue{}
+	q := ds.Queue[int]{}
 
 	_, err := q.Dequeue()
 
@@ -45,7 +45,7 @@ func TestQueueDequeue(t *testing.T) {
 }
 
 func TestQueuePeek(t *testing.T) {
-	q := ds.Queue{}
+	q := ds.Queue[int]{}
 
 	_, err := q.Peek()
 
@@ -66,7 +66,7 @@ func TestQueuePeek(t *testing.T) {
 }
 
 func TestQueueIsEmpty(t *testing.T) {
-	q := ds.Queue{}
+	q := ds.Queue[int]{}
 
 	if q.IsEmpty() != true {
 		t.Errorf("expected queue to be empty")

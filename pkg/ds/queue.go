@@ -2,17 +2,17 @@ package ds
 
 import "errors"
 
-type Queue struct {
-	Data []int
+type Queue[T any] struct {
+	Data []T
 }
 
-func (q *Queue) Enqueue(x int) {
+func (q *Queue[T]) Enqueue(x T) {
 	q.Data = append(q.Data, x)
 }
 
-func (q *Queue) Dequeue() (int, error) {
+func (q *Queue[T]) Dequeue() (T, error) {
 	if len(q.Data) == 0 {
-		return 0, errors.New("cannot dequeue from empty queue")
+		return *new(T), errors.New("cannot dequeue from empty queue")
 	}
 
 	ret := q.Data[0]
@@ -21,15 +21,15 @@ func (q *Queue) Dequeue() (int, error) {
 	return ret, nil
 }
 
-func (q *Queue) Peek() (int, error) {
+func (q *Queue[T]) Peek() (T, error) {
 	if len(q.Data) == 0 {
-		return -1, errors.New("cannot peek from an empty queue")
+		return *new(T), errors.New("cannot peek from an empty queue")
 	}
 
 	return q.Data[0], nil
 
 }
 
-func (q *Queue) IsEmpty() bool {
+func (q *Queue[T]) IsEmpty() bool {
 	return len(q.Data) == 0
 }
