@@ -7,7 +7,7 @@ import (
 )
 
 func TestStackPush(t *testing.T) {
-	stack := ds.Stack{}
+	stack := ds.Stack[int]{}
 	stack.Push(1)
 
 	if len(stack.Data) != 1 {
@@ -16,7 +16,7 @@ func TestStackPush(t *testing.T) {
 }
 
 func TestStackPop(t *testing.T) {
-	stack := ds.Stack{}
+	stack := ds.Stack[int]{}
 	stack.Push(1)
 
 	popped, err := stack.Pop()
@@ -33,7 +33,7 @@ func TestStackPop(t *testing.T) {
 }
 
 func TestStackPeek(t *testing.T) {
-	stack := ds.Stack{}
+	stack := ds.Stack[int]{}
 	stack.Push(1)
 
 	peeked, err := stack.Peek()
@@ -50,7 +50,7 @@ func TestStackPeek(t *testing.T) {
 }
 
 func TestStackIsEmpty(t *testing.T) {
-	stack := ds.Stack{}
+	stack := ds.Stack[int]{}
 
 	if !stack.IsEmpty() {
 		t.Error("Expected stack to be empty")

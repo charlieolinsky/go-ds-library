@@ -12,7 +12,7 @@ type TreeNode struct {
 }
 
 type Tree struct {
-	root *TreeNode
+	Root *TreeNode
 }
 
 func (t *Tree) Insert(parent *TreeNode, val int) *TreeNode {
@@ -25,8 +25,8 @@ func (t *Tree) Insert(parent *TreeNode, val int) *TreeNode {
 	//When parent is nil we are looking at the root node
 	if parent == nil {
 		//If the root is empty then we need a new root
-		if t.root == nil {
-			t.root = node
+		if t.Root == nil {
+			t.Root = node
 		}
 	} else {
 		//Add a new node to the parents children
@@ -51,7 +51,7 @@ func (t *Tree) Contains(root *TreeNode, val int) bool {
 	}
 
 	//Recursively Search the children of the current node
-	for i := 0; i < len(t.root.Children); i++ {
+	for i := 0; i < len(root.Children); i++ {
 		if t.Contains(root.Children[i], val) {
 			return true
 		}
@@ -64,22 +64,40 @@ func (t *Tree) Contains(root *TreeNode, val int) bool {
 // Delete the first occurrence of the provided value in the tree or return error
 // Recursive DFS: time O(n), worst-case space O(n), average-case space O(log(n))
 func (t *Tree) Delete(root *TreeNode, val int) error {
-	if root == nil {
+	if t.Root == nil {
 		return errors.New("cannot delete from an empty tree")
 	}
 
-	// Traverse the children to find the node with the value
-	for i := 0; i < len(root.Children); i++ {
+	// Check for case where the root is to be deleted
+	if t.Root.Value == val {
+		if len(t.Root.Children) > 0 {
+			// Promote the first child as the new root
+			newRoot := t.Root.Children[0]
+			newRoot.Parent = nil // Set new root's parent to nil
 
-		//Current Node (potential node to be deleted)
+			// Append the rest of the old root's children to the new root
+			newRoot.Children = append(newRoot.Children, t.Root.Children[1:]...)
+
+			t.Root = newRoot // Update the tree's root
+		} else {
+			t.Root = nil // Tree is now empty
+		}
+		return nil
+	}
+
+	// Recursive helper function for deletion when root is not val
+	return t.deleteNode(root, val)
+}
+
+// Helper function to delete a node
+func (t *Tree) deleteNode(root *TreeNode, val int) error {
+	for i := 0; i < len(root.Children); i++ {
 		cur := root.Children[i]
 
 		if cur.Value == val {
-			// take a slice of Children up to but not including cur (i), then append all of cur's children to the root's children slice.
-			//This effectively deletes cur and adds its children in its place
-			root.Children = append(root.Children[:i], cur.Children...)
-
-			// Update parent pointers of promoted nodes. Once cur is deleted is children are still pointing at it.
+			// Remove cur and append its children
+			root.Children = append(root.Children[:i], append(cur.Children, root.Children[i+1:]...)...)
+			// Update parent pointers
 			for _, child := range cur.Children {
 				child.Parent = root
 			}
@@ -87,7 +105,7 @@ func (t *Tree) Delete(root *TreeNode, val int) error {
 		}
 
 		// Recursively search in cur's children
-		if err := t.Delete(cur, val); err == nil {
+		if err := t.deleteNode(cur, val); err == nil {
 			return nil
 		}
 	}
@@ -113,18 +131,18 @@ func (t *Tree) PostOrderTraversal(root *TreeNode) {
 	}
 
 	for _, child := range root.Children {
-		t.PreOrderTraversal(child)
+		t.PostOrderTraversal(child)
 	}
 	fmt.Printf("PostO: %d\n", root.Value)
 }
 
 func (t *Tree) LevelOrderTraversal() {
-	if t.root == nil {
+	if t.Root == nil {
 		return
 	}
 
 	q := Queue[*TreeNode]{}
-	q.Enqueue(t.root)
+	q.Enqueue(t.Root)
 
 	for !q.IsEmpty() {
 		cur, _ := q.Dequeue()
@@ -135,5 +153,22 @@ func (t *Tree) LevelOrderTraversal() {
 			q.Enqueue(child)
 		}
 	}
+}
+
+func (t *Tree) Height(root *TreeNode) int {
+	if root == nil {
+		return -1
+	}
+	if len(root.Children) == 0 {
+		return 0
+	}
+
+	maxHeight := -1
+
+	for _, child := range root.Children {
+		childHeight := t.Height(child)
+		maxHeight = max(childHeight, maxHeight)
+	}
+	return maxHeight + 1
 
 }
